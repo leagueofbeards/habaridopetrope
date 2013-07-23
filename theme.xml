@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pluggable type="theme">
+	<name>Habari Dopetrope</name>
+	<class>decepticon</class>
+	<license url="http://html5up.net/license/">The Creative Commons Attribution 3.0 License</license>
+	<license url="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</license>
+	<author url="http://html5up.net">HTML5 UP</author>
+	<author url="https://leagueofbeards.com">League of Beards</author>
+	<version>1.0</version>
+	<url>https://leagueofbeards.com</url>
+	<description><![CDATA[Habari port of DopeTrope from HTML5 UP.]]></description>
+	<template_engine>rawphpengine</template_engine>
+	<copyright>2013</copyright>
+</pluggable>
