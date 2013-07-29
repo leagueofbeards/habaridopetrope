@@ -10,4 +10,5 @@
 	<description><![CDATA[Habari port of DopeTrope from HTML5 UP.]]></description>
 	<template_engine>rawphpengine</template_engine>
 	<copyright>2013</copyright>
+	<guid>230341a4-5516-4dfd-9b17-3474c15f9ced</guid>
 </pluggable>
