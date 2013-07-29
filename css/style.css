@@ -26,6 +26,11 @@
 		color: #5d5d5d;
 	}
 
+	[class*="fontawesome-"]:before {
+		font-family: 'FontAwesome', sans-serif;
+		margin-right: 5px;
+	}
+
 	strong, b
 	{
 		color: #252122;
@@ -183,6 +188,11 @@
 					background: #151112;
 				}
 		
+				.button [class*="fontawesome-"] {
+					color: #fff;
+					opacity: 0.5;
+				}
+		
 			.button-icon
 			{
 				line-height: 32px;
@@ -293,6 +303,10 @@
 		.is-post
 		{
 		}
+			.is-post i.fontawesome-icon {
+				color: #333;
+				opacity: 1.0;
+			}
 	
 	/* List */
 

@@ -1,5 +1,5 @@
 <?php namespace Habari; ?>
-<div class="row">
+<div id="blog" class="row block">
 	<div class="12u">
 		<section>
 			<header class="major">
@@ -10,7 +10,7 @@
 					<?php foreach( $theme->latest($theme->newest()->id) as $post ) { ?>
 					<div class="6u">
 						<section class="box">
-							<a href="<?php echo $post->permalink; ?>" class="image image-full"><img src="<?php Site::out_url('theme'); ?>/images/pic08.jpg" alt=""></a>
+							<a href="<?php echo $post->permalink; ?>" class="image image-full"><img src="<?php echo $post->info->header; ?>" alt="<?php echo $post->title; ?>" /></a>
 							<header>
 								<h3><?php echo $post->title_out; ?></h3>
 								<span class="byline">Posted <?php echo $post->pubdate->friendly(1); ?></span>
@@ -18,7 +18,7 @@
 								<p><?php echo $theme->exerptor($post->content_out, 163); ?></p>
 							<footer class="actions">
 								<a href="<?php echo $post->permalink; ?>" class="button button-icon button-icon-1">Continue Reading</a>
-								<a href="<?php echo $post->permalink; ?>#comments" class="button button-alt button-icon button-icon-2"><?php echo $post->comments->count; ?>  comments</a>
+								<a href="<?php echo $post->permalink; ?>#disqus_thread" class="button button-alt button-icon button-icon-2"><?php echo $post->comments->count; ?>  comments</a>
 							</footer>
 						</section>
 					</div>

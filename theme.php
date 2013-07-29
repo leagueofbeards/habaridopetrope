@@ -7,7 +7,8 @@ if( !defined( 'HABARI_PATH' ) ) {
 class Dopetrope extends Theme
 {
 
-	const D_CACHE = '36000';
+	const D_CACHE = '3600'; // cache for an hour
+	const P_CACHE = '86400'; // cache for a day
 	
 	public function action_theme_activated() {}
 	
@@ -38,15 +39,36 @@ class Dopetrope extends Theme
 	}
 	
 	public function newest() {
-		return Post::get( array('orderby' => 'pubdate DESC', 'content_type' => Post:: type('entry')) );
+		if ( Cache::has( array('DPT', 'newest' ) ) ) {
+			$content = Cache::get( array('DPT', 'newest' ) );
+		} else {
+			$content = Post::get( array('status' => Post::status('published'), 'orderby' => 'pubdate DESC', 'content_type' => Post:: type('entry')) );
+			Cache::set( array('DPT', 'newest' ), $content, self::P_CACHE, true );
+		}
+		
+		return $content;
 	}
 	
 	public function latest($ignore) {
-		return Posts::get( array('orderby' => 'pubdate DESC', 'limit' => 2, 'not:id' => $ignore, 'content_type' => Post:: type('entry')) );
+		if ( Cache::has( array('DPT', 'latest' ) ) ) {
+			$content = Cache::get( array('DPT', 'latest' ) );
+		} else {
+			$content = Posts::get( array('status' => Post::status('published'), 'orderby' => 'pubdate DESC', 'limit' => 2, 'not:id' => $ignore, 'content_type' => Post:: type('entry')) );
+			Cache::set( array('DPT', 'latest' ), $content, self::P_CACHE, true );
+		}
+		
+		return $content;
 	}
 	
 	public function recent($ignore) {
-		return Posts::get( array('orderby' => 'pubdate DESC', 'limit' => 4, 'not:id' => $ignore, 'content_type' => Post:: type('entry')) );		
+		if( Cache::has( array('DPT', 'recent') ) ) {
+			$content = Cache::get( array('DPT', 'recent' ) );
+		} else {
+			$content =  Posts::get( array('status' => Post::status('published'), 'orderby' => 'pubdate DESC', 'limit' => 4, 'not:id' => $ignore, 'content_type' => Post:: type('entry')) );		
+			Cache::set( array('DPT', 'recent' ), $content, self::P_CACHE, true );
+		}
+		
+		return $content;
 	}
 	
 	public function t_and_l( $terms, $between = ', ', $between_last = null, $sort_alphabetical = false, $linked = true ) {
@@ -76,6 +98,44 @@ class Dopetrope extends Theme
 		} else {
 			$fn = function($a, $b) {
 				return "<span class=\"tag\">" . $a . "</span>";
+			};
+		}
+		
+		$array = array_map( $fn, $array, array_keys( $array ) );
+		$last = array_pop( $array );
+		$out = implode( $between, $array );
+		$out .= ( $out == '' ) ? $last : $between_last . $last;
+		
+		return $out;
+	}
+	
+	public function parse( $terms, $between = ', ', $between_last = null, $sort_alphabetical = false, $linked = true ) {
+		$array = array();
+
+		if ( !$terms instanceof Terms ) {
+			$terms = new Terms( $terms );
+		}
+
+		foreach ( $terms as $term ) {
+			$array[$term->term] = $term->term_display;
+		}
+
+		if ( $sort_alphabetical ) {
+			ksort( $array );
+		}
+
+		if ( $between_last === null ) {
+			// @locale The default string used between the last two items in a series of tags (one, two, three *and* four).
+			$between_last = _t( ',' );
+		}
+
+		if( $linked == true ) {
+			$fn = function($a, $b) {
+				return $a;
+			};
+		} else {
+			$fn = function($a, $b) {
+				return $a;
 			};
 		}
 		
